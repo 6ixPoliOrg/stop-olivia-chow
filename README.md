@@ -1,14 +1,18 @@
-# Welcome to your Lovable project
+# Mayor Olivia's Showcase
+
+Build this website based on the attached html page. Use variations of the attached image for the hero section and sections where Mayor Olivia as Chow is mentioned. Generate images for other sections where there is a placeholder description but no image.
 
 This project was built with [Lovable](https://lovable.dev).
 
+**Live app**: https://stop-olivia-chow.lovable.app
+
 ## Build with Lovable
 
-Open your project in the [Lovable editor](https://lovable.dev) and keep building.
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/5f1b9a92-67ea-4d7e-a676-565380a6f8cb).
 
 - **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: connect the project to GitHub and every change made in Lovable is committed straight to your repository.
-- **Full ownership**: this code is yours. Push to your repository and your changes sync back into Lovable, ready for your next prompt.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
 ## Development
 
@@ -20,10 +24,3 @@ cd <repository-name>
 npm i
 npm run dev
 ```
-
-## Built with
-
-- TanStack Start
-- TypeScript
-- React
-- Tailwind CSS
