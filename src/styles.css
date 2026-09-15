@@ -247,8 +247,8 @@ strong{ font-weight:600; }
 .issue h3::before{ content:""; display:inline-block; width:1.4rem; height:3px; background:var(--red); vertical-align:middle; margin-right:.6rem; }
 .simple{
   background:var(--ink); color:var(--white);
-  box-sizing:border-box; width:calc(100% + (var(--gutter) * 2));
-  padding:1.4rem var(--gutter) 1.5rem; margin:1.75rem calc(var(--gutter) * -1) 1.25rem;
+  box-sizing:border-box; width:calc(100% + var(--gutter));
+  padding:1.4rem var(--gutter) 1.5rem; margin:1.75rem 0 1.25rem calc(var(--gutter) * -1);
 }
 @media (min-width:48rem){ .simple{ width:100%; margin-left:0; margin-right:0; padding:1.6rem 1.75rem; } }
 .simple h3{ color:var(--paper); margin-top:0; }
