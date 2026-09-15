@@ -61,9 +61,7 @@ const rawHtml = `
 <section class="hero" aria-labelledby="heroTitle">
   <figure class="photo"><img src="__heroImage__" alt="Olivia Chow in downtown Toronto at night" fetchpriority="high"></figure>
   <div class="wrap">
-    <p class="kicker"><span class="seg">Toronto</span> &middot; <span class="seg">Mayoral election</span> &middot; <span class="seg">October 26, 2026</span></p>
-    <p class="name">Olivia Chow</p>
-    <h1 class="display lockup" id="heroTitle"><span class="y"><span class="q">“</span>Falling</span><span class="r">apart.<span class="q">”</span></span></h1>
+    <h1 class="display lockup" id="heroTitle"><span class="y">Toronto is</span><span class="y">falling</span><span class="r">apart</span></h1>
     <p class="sub">Mayor Olivia Chow, one year into the job, on the state of the city she runs. Two years and a 19% property-tax increase later, the list of what does not work in Toronto is longer, not shorter.</p>
   </div>
 </section>
