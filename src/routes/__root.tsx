@@ -111,8 +111,6 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
-        <script src="/carnival-dancer-widget/dancer.js"></script>
-        <script src="/carnival-dancer-widget/mascot.js"></script>
         <Scripts />
       </body>
     </html>
