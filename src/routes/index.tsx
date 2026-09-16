@@ -453,6 +453,18 @@ const rawHtml = `
 
 </main>
 
+<carnival-mascot
+  costume="purple"
+  section-selector="main section, main article"
+  point-selector="a.btn, button"
+  size="230"
+  mobile-size="150"
+  position="bottom-right"
+  avoid-selector="#sources"
+  asset-base="/carnival-dancer-widget/assets/"
+  label="Carnival dancer mascot">
+</carnival-mascot>
+
 `;
 
 const pageHtml = rawHtml
