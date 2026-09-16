@@ -525,21 +525,16 @@ function Index() {
     return () => document.removeEventListener("keydown", onKey);
   }, []);
 
+  // Event delegation: the innerHTML subtree can be re-rendered, so listeners
+  // attached to individual nodes would be lost.
   useEffect(() => {
-    const open = document.getElementById("menuOpen");
-    const close = document.getElementById("menuClose");
-    const menu = document.getElementById("menu");
-    const links = menu?.querySelectorAll("a");
-    const show = () => setMenuOpen(true);
-    const hide = () => setMenuOpen(false);
-    open?.addEventListener("click", show);
-    close?.addEventListener("click", hide);
-    links?.forEach((link) => link.addEventListener("click", hide));
-    return () => {
-      open?.removeEventListener("click", show);
-      close?.removeEventListener("click", hide);
-      links?.forEach((link) => link.removeEventListener("click", hide));
+    const onClick = (event: MouseEvent) => {
+      const target = event.target as Element | null;
+      if (target?.closest("#menuOpen")) setMenuOpen(true);
+      else if (target?.closest("#menuClose, #menu a")) setMenuOpen(false);
     };
+    document.addEventListener("click", onClick);
+    return () => document.removeEventListener("click", onClick);
   }, []);
 
   useEffect(() => {
@@ -552,10 +547,10 @@ function Index() {
   }, [menuOpen]);
 
   useEffect(() => {
-    const form = document.getElementById("joinForm") as HTMLFormElement | null;
-    const submit = (event: Event) => {
+    const submit = (event: SubmitEvent) => {
+      const form = event.target as HTMLFormElement | null;
+      if (form?.id !== "joinForm") return;
       event.preventDefault();
-      if (!form) return;
       const data = new FormData(form);
       const email = String(data.get("email") ?? "").trim();
       const name = String(data.get("name") ?? "").trim();
@@ -563,8 +558,8 @@ function Index() {
       setFormState(valid ? "ok" : "error");
       if (valid) form.reset();
     };
-    form?.addEventListener("submit", submit);
-    return () => form?.removeEventListener("submit", submit);
+    document.addEventListener("submit", submit);
+    return () => document.removeEventListener("submit", submit);
   }, []);
 
   useEffect(() => {
