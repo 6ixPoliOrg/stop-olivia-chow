@@ -143,6 +143,8 @@
     get dancer() { return this._dancer; }
     get currentSection() { return this._currentSection; }
     get isDismissed() { return this._hidden; }
+
+    get dismissed() { return this._hidden; }
     get isDucked() { return this._ducked; }
     get isMenuOpen() { return this._menuOpen; }
     get isAsleep() { return this._asleep; }
@@ -217,6 +219,10 @@
 
     say(text, { duration = null } = {}) {
       this._showBubble(text, duration);
+    }
+
+    hush() {
+      this._hideBubble();
     }
 
     toggleMenu() {
@@ -569,7 +575,11 @@
     _bind() {
       this._characterButton.addEventListener('click', () => this.toggleMenu());
       this._menuButton.addEventListener('click', () => this.toggleMenu());
-      this._closeButton?.addEventListener('click', () => this.dismiss());
+      this._closeButton?.addEventListener('click', () => {
+        if (this.dispatchEvent(new CustomEvent('mascotdismissrequest', { cancelable: true, bubbles: true }))) {
+          this.dismiss();
+        }
+      });
       this._bindMenuButtons();
 
       this._shell.addEventListener('transitionend', event => {
