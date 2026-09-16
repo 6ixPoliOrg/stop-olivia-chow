@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import { PasswordGate } from "@/components/PasswordGate";
+import { MascotDialogue } from "@/components/MascotDialogue";
 import heroImage from "@/assets/olivia-chow-hero.jpg";
 import taxImage from "@/assets/issue-tax.jpg";
 import vacantImage from "@/assets/issue-vacant-home.jpg";
@@ -61,7 +62,7 @@ const rawHtml = `
 <main id="top">
 
 <!-- ====================== HERO ====================== -->
-<section class="hero" aria-labelledby="heroTitle">
+<section class="hero" data-mascot="home" aria-labelledby="heroTitle">
   <figure class="photo"><img src="__heroImage__" alt="Olivia Chow in downtown Toronto at night" fetchpriority="high"></figure>
   <div class="wrap">
     <h1 class="display lockup" id="heroTitle"><span class="y">Toronto is</span><span class="y">falling</span><span class="r">apart</span></h1>
@@ -70,7 +71,7 @@ const rawHtml = `
 </section>
 
 <!-- ====================== FRONT PAGE COPY ====================== -->
-<section class="front" id="front" aria-labelledby="frontTitle">
+<section class="front" id="front" data-mascot="case" aria-labelledby="frontTitle">
   <div class="wrap">
     <h2 class="kicker" id="frontTitle">The case</h2>
     <p class="lede">The mayor is the CEO of the city. The job is basic: keep taxes fair, keep the streets moving, keep people housed and safe, and keep the promises you made to get the job. Olivia Chow has had three budgets and three years. On each of those tests, Toronto is worse off or no better.</p>
@@ -97,14 +98,14 @@ const rawHtml = `
 
 <!-- ====================== THE RECORD ====================== -->
 <section id="record" aria-labelledby="recordTitle">
-  <div class="wrap record-head">
+  <div class="wrap record-head" data-mascot="record">
     <p class="kicker">Three years as mayor</p>
     <h2 class="display" id="recordTitle">The record</h2>
     <p>Ten issues. Each one has what happened, why it matters, and a plain-language version. Sources are linked in each section and listed in full at the bottom of the page.</p>
   </div>
 
   <!-- 1 -->
-  <article class="issue wrap" id="issue-1">
+  <article class="issue wrap" id="issue-1" data-mascot="issue-1">
     <figure class="photo"><img src="__taxImage__" alt="Property tax bill and calculator on a Toronto kitchen table" loading="lazy" width="1200" height="800"></figure>
     <div class="meta"><span class="num">01 <em>/ 10</em></span><span class="kicker topic">Taxes and spending</span></div>
     <h2 class="display">She promised “modest.” Your property tax is up 19%.</h2>
@@ -136,7 +137,7 @@ const rawHtml = `
   </article>
 
   <!-- 2 -->
-  <article class="issue wrap" id="issue-2">
+  <article class="issue wrap" id="issue-2" data-mascot="issue-2">
     <figure class="photo"><img src="__vacantImage__" alt="A lived-in Toronto home at dusk" loading="lazy" width="1200" height="800"></figure>
     <div class="meta"><span class="num">02 <em>/ 10</em></span><span class="kicker topic">Vacant Home Tax</span></div>
     <h2 class="display">She tripled a tax. Then 167,000 homes were billed as vacant. Most were not.</h2>
@@ -152,7 +153,7 @@ const rawHtml = `
   </article>
 
   <!-- 3 -->
-  <article class="issue wrap" id="issue-3">
+  <article class="issue wrap" id="issue-3" data-mascot="issue-3">
     <figure class="photo"><img src="__gridlockImage__" alt="Traffic congestion on Toronto’s Gardiner Expressway" loading="lazy" width="1200" height="800"></figure>
     <div class="meta"><span class="num">03 <em>/ 10</em></span><span class="kicker topic">Congestion</span></div>
     <h2 class="display">88% say gridlock is serious. 72% say the City runs road work badly.</h2>
@@ -173,7 +174,7 @@ const rawHtml = `
   </article>
 
   <!-- 4 -->
-  <article class="issue wrap" id="issue-4">
+  <article class="issue wrap" id="issue-4" data-mascot="issue-4">
     <figure class="photo"><img src="__policeImage__" alt="Police cruiser outside a downtown Toronto division" loading="lazy" width="1200" height="800"></figure>
     <div class="meta"><span class="num">04 <em>/ 10</em></span><span class="kicker topic">Policing and safety</span></div>
     <h2 class="display">She offered police $12.6 million less. The Chief went public. She folded.</h2>
@@ -195,7 +196,7 @@ const rawHtml = `
   </article>
 
   <!-- 5 -->
-  <article class="issue wrap" id="issue-5">
+  <article class="issue wrap" id="issue-5" data-mascot="issue-5">
     <figure class="photo"><img src="__housingImage__" alt="Stalled condominium construction site in Toronto" loading="lazy" width="1200" height="800"></figure>
     <div class="meta"><span class="num">05 <em>/ 10</em></span><span class="kicker topic">Housing</span></div>
     <h2 class="display">She ran as the housing mayor. Homebuilding fell to a 30-year low.</h2>
@@ -218,7 +219,7 @@ const rawHtml = `
   </article>
 
   <!-- 6 -->
-  <article class="issue wrap" id="issue-6">
+  <article class="issue wrap" id="issue-6" data-mascot="issue-6">
     <figure class="photo"><img src="__encampmentImage__" alt="Unoccupied tents in a downtown Toronto park" loading="lazy" width="1200" height="800"></figure>
     <div class="meta"><span class="num">06 <em>/ 10</em></span><span class="kicker topic">Homelessness and encampments</span></div>
     <h2 class="display">Homelessness doubled. The tents stayed. Neighbours were told last.</h2>
@@ -235,7 +236,7 @@ const rawHtml = `
   </article>
 
   <!-- 7 -->
-  <article class="issue wrap" id="issue-7">
+  <article class="issue wrap" id="issue-7" data-mascot="issue-7">
     <figure class="photo"><img src="__binsImage__" alt="Overflowing street litter bin in downtown Toronto" loading="lazy" width="1200" height="800"></figure>
     <div class="meta"><span class="num">07 <em>/ 10</em></span><span class="kicker topic">The basics</span></div>
     <h2 class="display">Taxes up 19%. Bins still full. Her word for it: “falling apart.”</h2>
@@ -258,7 +259,7 @@ const rawHtml = `
   </article>
 
   <!-- 8 -->
-  <article class="issue wrap" id="issue-8">
+  <article class="issue wrap" id="issue-8" data-mascot="issue-8">
     <figure class="photo"><img src="__squareImage__" alt="Public square at Yonge and Dundas in Toronto" loading="lazy" width="1200" height="800"></figure>
     <div class="meta"><span class="num">08 <em>/ 10</em></span><span class="kicker topic">Sankofa Square</span></div>
     <h2 class="display">She seconded a name change that 71% of Toronto did not want.</h2>
@@ -273,7 +274,7 @@ const rawHtml = `
   </article>
 
   <!-- 9 -->
-  <article class="issue wrap" id="issue-9">
+  <article class="issue wrap" id="issue-9" data-mascot="issue-9">
     <figure class="photo"><img src="__scienceImage__" alt="Closed entrance of the Ontario Science Centre" loading="lazy" width="1200" height="800"></figure>
     <div class="meta"><span class="num">09 <em>/ 10</em></span><span class="kicker topic">Ontario Place and the Science Centre</span></div>
     <h2 class="display">She promised to fight Ford’s waterfront plan. Then she signed it away.</h2>
@@ -289,7 +290,7 @@ const rawHtml = `
   </article>
 
   <!-- 10 -->
-  <article class="issue wrap" id="issue-10">
+  <article class="issue wrap" id="issue-10" data-mascot="issue-10">
     <figure class="photo"><img src="__cityHallImage__" alt="Toronto City Hall and Nathan Phillips Square at night" loading="lazy" width="1200" height="800"></figure>
     <div class="meta"><span class="num">10 <em>/ 10</em></span><span class="kicker topic">Trust and showing up</span></div>
     <h2 class="display">She skipped the October 7 vigil. The excuses kept changing.</h2>
@@ -306,7 +307,7 @@ const rawHtml = `
 </section>
 
 <!-- ====================== STOP BAND ====================== -->
-<section class="stop-band" aria-labelledby="stopTitle">
+<section class="stop-band" data-mascot="cta" aria-labelledby="stopTitle">
   <div class="wrap">
     <p class="kicker">Want a mayor who does the job?</p>
     <h2 class="display" id="stopTitle"><span class="y">On October 26,</span><span class="r">vote her out.</span></h2>
@@ -316,7 +317,7 @@ const rawHtml = `
 </section>
 
 <!-- ====================== JOIN ====================== -->
-<section class="join" id="join" aria-labelledby="joinTitle">
+<section class="join" id="join" data-mascot="join" aria-labelledby="joinTitle">
   <div class="wrap">
     <p class="kicker">Join the coalition</p>
     <h2 class="display" id="joinTitle">Help us finish this.</h2>
@@ -337,7 +338,7 @@ const rawHtml = `
 </section>
 
 <!-- ====================== FOOTER ====================== -->
-<footer class="foot" id="sources">
+<footer class="foot" id="sources" data-mascot="footer">
   <div class="wrap">
     <span class="wordmark"><span class="stop">Stop</span><span>Olivia Chow</span></span>
     <p>Stop Chow is an independent residents’ campaign in Toronto. It is not affiliated with the City of Toronto or with any candidate.</p>
@@ -458,7 +459,8 @@ const rawHtml = `
 
 <carnival-mascot
   costume="purple"
-  section-selector="main section, main article"
+  section-selector="[data-mascot]"
+  dismiss-days="0"
   point-selector="a.btn, button"
   size="230"
   mobile-size="150"
@@ -568,7 +570,12 @@ function Page() {
     document.getElementById("msgErr")?.classList.toggle("show", formState === "error");
   }, [formState]);
 
-  return <div dangerouslySetInnerHTML={{ __html: pageHtml }} />;
+  return (
+    <>
+      <div dangerouslySetInnerHTML={{ __html: pageHtml }} />
+      <MascotDialogue />
+    </>
+  );
 }
 
 function Index() {

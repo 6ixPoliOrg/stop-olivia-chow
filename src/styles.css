@@ -346,3 +346,26 @@ strong{ font-weight:600; }
   .lockup{width:100%;font-size:clamp(3.6rem,17vw,5rem)}
   .hero .sub{max-width:none;font-size:1.05rem;line-height:1.42}
 }
+
+/* Mascot dialogue UI */
+.mascot-confirm{
+  position:fixed; right:16px; bottom:calc(16px + 240px); z-index:2147482001;
+  max-width:280px; background:var(--white); color:var(--ink);
+  border:2px solid var(--ink); border-radius:12px; padding:14px;
+  font-family:var(--body); box-shadow:0 8px 24px oklch(0.18 0.015 70 / .25);
+}
+.mascot-confirm p{ margin:0 0 .75rem; font-size:.95rem; line-height:1.45; }
+.mascot-confirm-actions{ display:flex; flex-direction:column; gap:.5rem; }
+.mascot-confirm-actions .btn{ font-size:.95rem; padding:.6rem .9rem; }
+.mascot-return{
+  position:fixed; right:16px; bottom:16px; z-index:2147482001;
+  width:48px; height:48px; border-radius:50%;
+  background:var(--red); color:var(--white); border:2px solid var(--ink);
+  font-size:1.4rem; line-height:1; cursor:pointer;
+  box-shadow:0 4px 14px oklch(0.18 0.015 70 / .3);
+}
+.mascot-return:hover{ background:var(--red-2); }
+@media (max-width:47.99rem){
+  .mascot-confirm{ bottom:170px; right:12px; }
+  .mascot-return{ right:12px; bottom:12px; }
+}
