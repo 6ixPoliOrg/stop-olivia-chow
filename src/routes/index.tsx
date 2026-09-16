@@ -488,7 +488,7 @@ function Index() {
     const loadScript = (src: string) => new Promise<void>((resolve, reject) => {
       const existing = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement | null;
       if (existing) {
-        if (existing.dataset.loaded === "true") resolve();
+        if (existing.dataset["loaded"] === "true") resolve();
         else {
           existing.addEventListener("load", () => resolve(), { once: true });
           existing.addEventListener("error", () => reject(), { once: true });
@@ -498,7 +498,7 @@ function Index() {
       const script = document.createElement("script");
       script.src = src;
       script.addEventListener("load", () => {
-        script.dataset.loaded = "true";
+        script.dataset["loaded"] = "true";
         resolve();
       }, { once: true });
       script.addEventListener("error", () => reject(), { once: true });
