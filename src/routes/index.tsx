@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState, type FormEvent } from "react";
+import { PasswordGate } from "@/components/PasswordGate";
 import heroImage from "@/assets/olivia-chow-hero.jpg";
 import taxImage from "@/assets/issue-tax.jpg";
 import vacantImage from "@/assets/issue-vacant-home.jpg";
@@ -483,7 +484,7 @@ const pageHtml = rawHtml
   .replace("__scienceImage__", scienceImage)
   .replace("__cityHallImage__", cityHallImage);
 
-function Index() {
+function Page() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [formState, setFormState] = useState<"idle" | "ok" | "error">("idle");
 
@@ -568,4 +569,12 @@ function Index() {
   }, [formState]);
 
   return <div dangerouslySetInnerHTML={{ __html: pageHtml }} />;
+}
+
+function Index() {
+  return (
+    <PasswordGate>
+      <Page />
+    </PasswordGate>
+  );
 }
