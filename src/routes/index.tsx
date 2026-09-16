@@ -453,6 +453,18 @@ const rawHtml = `
 
 </main>
 
+<carnival-mascot
+  costume="purple"
+  section-selector="main section, main article"
+  point-selector="a.btn, button"
+  size="230"
+  mobile-size="150"
+  position="bottom-right"
+  avoid-selector="#sources"
+  asset-base="/carnival-dancer-widget/assets/"
+  label="Carnival dancer mascot">
+</carnival-mascot>
+
 `;
 
 const pageHtml = rawHtml
@@ -471,6 +483,31 @@ const pageHtml = rawHtml
 function Index() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [formState, setFormState] = useState<"idle" | "ok" | "error">("idle");
+
+  useEffect(() => {
+    const loadScript = (src: string) => new Promise<void>((resolve, reject) => {
+      const existing = document.querySelector(`script[src="${src}"]`) as HTMLScriptElement | null;
+      if (existing) {
+        if (existing.dataset["loaded"] === "true") resolve();
+        else {
+          existing.addEventListener("load", () => resolve(), { once: true });
+          existing.addEventListener("error", () => reject(), { once: true });
+        }
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = src;
+      script.addEventListener("load", () => {
+        script.dataset["loaded"] = "true";
+        resolve();
+      }, { once: true });
+      script.addEventListener("error", () => reject(), { once: true });
+      document.body.appendChild(script);
+    });
+
+    void loadScript("/carnival-dancer-widget/dancer.js")
+      .then(() => loadScript("/carnival-dancer-widget/mascot.js"));
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
