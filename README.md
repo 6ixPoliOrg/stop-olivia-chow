@@ -33,3 +33,9 @@ site and deploys it to GitHub Pages on every push to `main`.
 1. In the repo's **Settings → Pages**, set **Source** to **GitHub Actions**.
 2. Push to `main` (or run the workflow manually). The site is published at
    `https://<org-or-user>.github.io/<repo-name>/`.
+
+To password-protect the front page, add a repository secret named
+`SITE_PASSCODE` (**Settings → Secrets and variables → Actions**). Visitors must
+enter it once per browser session. This is a client-side check only — a
+deterrent, not real security — so don't rely on it for anything sensitive.
+Delete the secret to remove the gate.
