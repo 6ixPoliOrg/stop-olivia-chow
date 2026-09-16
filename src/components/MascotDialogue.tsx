@@ -5,6 +5,7 @@ interface CarnivalMascotEl extends HTMLElement {
   say(text: string, o?: { duration?: number }): void;
   dismiss(): void;
   show(): void;
+  hush(): void;
   readonly dismissed: boolean;
   readonly currentSection: Element | null;
 }
@@ -20,6 +21,7 @@ export function MascotDialogue() {
   const altRef = useRef(false);
   const timerRef = useRef<number | null>(null);
   const keepRef = useRef<HTMLButtonElement | null>(null);
+  const speakRef = useRef<() => void>(() => {});
 
   useEffect(() => {
     let cancelled = false;
@@ -72,8 +74,11 @@ export function MascotDialogue() {
     };
     const onDismissRequest = (event: Event) => {
       event.preventDefault();
+      stopCycle();
+      mascotRef.current?.hush();
       setConfirming(true);
     };
+    speakRef.current = speak;
 
     void customElements.whenDefined("carnival-mascot").then(() => {
       if (cancelled) return;
@@ -111,11 +116,16 @@ export function MascotDialogue() {
     if (!confirming) return;
     keepRef.current?.focus();
     const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setConfirming(false);
+      if (event.key === "Escape") keepDancing();
     };
     document.addEventListener("keydown", onKey);
     return () => document.removeEventListener("keydown", onKey);
   }, [confirming]);
+
+  const keepDancing = () => {
+    setConfirming(false);
+    speakRef.current();
+  };
 
   return (
     <>
@@ -128,12 +138,7 @@ export function MascotDialogue() {
         >
           <p>{MASCOT_DISMISS_PROMPT}</p>
           <div className="mascot-confirm-actions">
-            <button
-              ref={keepRef}
-              type="button"
-              className="btn btn-red"
-              onClick={() => setConfirming(false)}
-            >
+            <button ref={keepRef} type="button" className="btn btn-red" onClick={keepDancing}>
               Keep dancing
             </button>
             <button

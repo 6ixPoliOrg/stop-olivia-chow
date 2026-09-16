@@ -221,6 +221,10 @@
       this._showBubble(text, duration);
     }
 
+    hush() {
+      this._hideBubble();
+    }
+
     toggleMenu() {
       this._menuOpen ? this.closeMenu() : this.openMenu();
     }
