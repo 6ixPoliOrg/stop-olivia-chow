@@ -26,6 +26,8 @@ export const Route = createFileRoute("/")({
   component: Index,
 });
 
+const base = import.meta.env.BASE_URL;
+
 const rawHtml = `
 <a class="skip" href="#record">Skip to the record</a>
 
@@ -461,13 +463,14 @@ const rawHtml = `
   mobile-size="150"
   position="bottom-right"
   avoid-selector="#sources"
-  asset-base="/carnival-dancer-widget/assets/"
+  asset-base="__assetBase__carnival-dancer-widget/assets/"
   label="Carnival dancer mascot">
 </carnival-mascot>
 
 `;
 
 const pageHtml = rawHtml
+  .replace("__assetBase__", base)
   .replace("__heroImage__", heroImage)
   .replace("__taxImage__", taxImage)
   .replace("__vacantImage__", vacantImage)
@@ -505,8 +508,8 @@ function Index() {
       document.body.appendChild(script);
     });
 
-    void loadScript("/carnival-dancer-widget/dancer.js")
-      .then(() => loadScript("/carnival-dancer-widget/mascot.js"));
+    void loadScript(`${base}carnival-dancer-widget/dancer.js`)
+      .then(() => loadScript(`${base}carnival-dancer-widget/mascot.js`));
   }, []);
 
   useEffect(() => {

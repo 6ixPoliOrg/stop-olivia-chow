@@ -24,3 +24,12 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Deploy to GitHub Pages
+
+A workflow (`.github/workflows/deploy-pages.yml`) builds this repo as a static
+site and deploys it to GitHub Pages on every push to `main`.
+
+1. In the repo's **Settings → Pages**, set **Source** to **GitHub Actions**.
+2. Push to `main` (or run the workflow manually). The site is published at
+   `https://<org-or-user>.github.io/<repo-name>/`.
