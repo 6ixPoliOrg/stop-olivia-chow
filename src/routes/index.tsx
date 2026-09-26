@@ -941,6 +941,8 @@ const MASCOT_ATTRS: Record<string, string> = {
   size: "230",
   "mobile-size": "150",
   position: "bottom-right",
+  // ms per frame for the six dances (widget default 150); moves with their own timings are unaffected.
+  "frame-time": "300",
   "avoid-selector": "#sources",
   "asset-base": `${BASE}carnival-dancer-widget/assets/`,
   label: "Carnival dancer mascot",
