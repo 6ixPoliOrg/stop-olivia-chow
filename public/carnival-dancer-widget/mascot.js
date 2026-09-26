@@ -754,9 +754,24 @@
     _mappedMove(section) {
       const explicit = section?.getAttribute('data-dancer-move');
       if (this._Dancer.hasMove(explicit)) return explicit;
-      const moves = this._Dancer.moves;
+      const moves = this._danceOrder();
       const index = Math.max(0, this._sections.indexOf(section));
       return moves[index % moves.length];
+    }
+
+    // One shuffled pass through every dance per page visit: sections cycle through
+    // all of them before any repeats, in a different order each visit.
+    _danceOrder() {
+      if (!this._danceList) {
+        const pool = this._Dancer.danceMoves || [];
+        const list = (pool.length ? pool : this._Dancer.moves).slice();
+        for (let i = list.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [list[i], list[j]] = [list[j], list[i]];
+        }
+        this._danceList = list;
+      }
+      return this._danceList;
     }
 
     _mappedIdleMove(section) {

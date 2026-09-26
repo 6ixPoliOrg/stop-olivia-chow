@@ -3,7 +3,7 @@
  * Sprite-sheet player web component.
  *
  * v3: costumes (assets/<costume>/), a looping idle move while resting,
- * per-move menu flag, move fallbacks per costume, 16 built-in moves.
+ * per-move menu flag, move fallbacks per costume, 21 built-in moves.
  *
  * Changes from v1:
  * - Smooth scaling. The art is painted, not pixel art.
@@ -44,6 +44,8 @@
     move.row = Math.max(0, Math.floor(Number(move.row) || 0));
     move.frames = Math.max(1, Math.floor(Number(move.frames) || DEFAULT_FRAMES));
     move.frameSize = Math.max(1, Math.floor(Number(move.frameSize) || DEFAULT_FRAME_SIZE));
+    move.repeat = Math.max(1, Math.floor(Number(move.repeat) || 1)); // full routines per play
+    move.dance = move.dance === true; // eligible for the per-section dance rotation
     if (Array.isArray(move.durations) && move.durations.length) {
       move.durations = Array.from({ length: move.frames }, (_, i) => Math.max(0, Number(move.durations[i % move.durations.length]) || 0));
     } else {
@@ -54,12 +56,17 @@
   }
 
   [
-    ['shoppingCart', { label: 'Shopping Cart', sheet: 'dance-1-2', row: 0 }],
-    ['sprinkler',    { label: 'Sprinkler',     sheet: 'dance-1-2', row: 1 }],
-    ['lawnmower',    { label: 'Lawnmower',     sheet: 'dance-3-4', row: 0 }],
-    ['awkward',      { label: "'Elaine' Dance", sheet: 'dance-3-4', row: 1 }],
-    ['robot',        { label: 'Robot',         sheet: 'dance-5-6', row: 0 }],
-    ['disco',        { label: 'Disco',         sheet: 'dance-5-6', row: 1 }],
+    ['shoppingCart', { label: 'Shopping Cart', sheet: 'dance-1-2', row: 0, dance: true }],
+    ['sprinkler',    { label: 'Sprinkler',     sheet: 'dance-1-2', row: 1, dance: true }],
+    ['lawnmower',    { label: 'Lawnmower',     sheet: 'dance-3-4', row: 0, dance: true }],
+    ['awkward',      { label: "'Elaine' Dance", sheet: 'dance-3-4', row: 1, dance: true }],
+    ['robot',        { label: 'Robot',         sheet: 'dance-5-6', row: 0, dance: true }],
+    ['disco',        { label: 'Disco',         sheet: 'dance-5-6', row: 1, dance: true }],
+    ['macarena',     { label: 'Macarena',      sheet: 'macarena',      frames: 8, dance: true }],
+    ['floss',        { label: 'Flossing',      sheet: 'floss',         frames: 6, repeat: 2, dance: true }],
+    ['moonwalk',     { label: 'Moonwalk',      sheet: 'moonwalk',      frames: 8, dance: true }],
+    ['raverShuffle', { label: 'Raver Shuffle', sheet: 'raver-shuffle', frames: 8, dance: true }],
+    ['skibidi',      { label: 'Skibidi',       sheet: 'skibidi',       frames: 8, dance: true }],
     ['wave',         { label: 'Wave',          sheet: 'walk-1-2',      row: 1, durations: [150, 120, 160, 160, 160, 200] }],
     ['point',        { label: 'Point',         sheet: 'point-1-2',     row: 0, durations: [120, 120, 450, 450, 120, 150] }],
     ['jump',         { label: 'Surprise',      sheet: 'point-1-2',     row: 1, durations: [150, 90, 110, 110, 120, 250] }],
@@ -139,6 +146,7 @@
     static get observedAttributes() { return ['move', 'mode', 'flip', 'costume']; }
     static get moves() { return order(); }
     static get menuMoves() { return order().filter(m => MOVES[m].menu); }
+    static get danceMoves() { return order().filter(m => MOVES[m].dance); }
     static moveLabel(name) { return MOVES[name]?.label || name; }
     static hasMove(name) { return Boolean(MOVES[name]); }
     static registerMove(name, def) { return defineMove(name, def); }
@@ -293,7 +301,7 @@
       this._loops = 0;
       this._acc = 0;
       const n = Number(loops);
-      this._oneShotTarget = Number.isFinite(n) && n > 0 ? Math.max(1, Math.floor(n)) : null;
+      this._oneShotTarget = Number.isFinite(n) && n > 0 ? Math.max(1, Math.floor(n)) * MOVES[name].repeat : null;
       this._oneShotDone = 0;
       if (manual) this._mode = 'manual';
       this._paused = false;
