@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { isPreviewConfigured } from "@/lib/preview-guard";
 
 const HASH = import.meta.env["VITE_SITE_PASSCODE_HASH"] as string | undefined;
 
@@ -12,24 +13,30 @@ export function PasswordGate({ children }: { children: ReactNode }) {
   const [checking, setChecking] = useState(false);
 
   useEffect(() => {
-    if (sessionStorage.getItem("site-unlocked") === HASH) setUnlocked(true);
+    if (isPreviewConfigured(HASH) && sessionStorage.getItem("site-unlocked") === HASH)
+      setUnlocked(true);
   }, []);
 
-  if (!HASH || unlocked) return children;
+  if (!isPreviewConfigured(HASH)) {
+    return (
+      <div className="preview-locked" role="alert">
+        <h1>Preview not configured</h1>
+        <p>This draft is not available until the site owner sets a preview passcode.</p>
+      </div>
+    );
+  }
+  if (unlocked) return children;
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
     setChecking(true);
     setError(false);
     try {
-      const digest = await crypto.subtle.digest(
-        "SHA-256",
-        new TextEncoder().encode(value),
-      );
+      const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value));
       const hex = Array.from(new Uint8Array(digest))
         .map((b) => b.toString(16).padStart(2, "0"))
         .join("");
-      if (hex === HASH.toLowerCase()) {
+      if (HASH && hex === HASH.toLowerCase()) {
         sessionStorage.setItem("site-unlocked", hex);
         setUnlocked(true);
       } else {
@@ -43,18 +50,12 @@ export function PasswordGate({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <form
-        onSubmit={onSubmit}
-        className="w-full max-w-sm rounded-lg border bg-card p-8 shadow-sm"
-      >
+      <form onSubmit={onSubmit} className="w-full max-w-sm rounded-lg border bg-card p-8 shadow-sm">
         <h1 className="text-center text-xl font-semibold text-foreground">
           This preview is password protected
         </h1>
         <div className="mt-6">
-          <label
-            htmlFor="passcode"
-            className="text-sm font-medium text-foreground"
-          >
+          <label htmlFor="passcode" className="text-sm font-medium text-foreground">
             Passcode
           </label>
           <Input
