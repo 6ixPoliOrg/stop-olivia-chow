@@ -933,17 +933,18 @@ const BASE = import.meta.env.BASE_URL;
 
 // The dancer is a custom element from public/carnival-dancer-widget; it picks its
 // dialogue from the nearest [data-mascot] section (see src/lib/mascot-lines.ts).
-const MASCOT_HTML = `<carnival-mascot
-  costume="purple"
-  section-selector="[data-mascot]"
-  dismiss-days="0"
-  point-selector="a.btn, button"
-  size="230"
-  mobile-size="150"
-  position="bottom-right"
-  avoid-selector="#sources"
-  asset-base="${BASE}carnival-dancer-widget/assets/"
-  label="Carnival dancer mascot"></carnival-mascot>`;
+const MASCOT_ATTRS: Record<string, string> = {
+  costume: "purple",
+  "section-selector": "[data-mascot]",
+  "dismiss-days": "0",
+  "point-selector": "a.btn, button",
+  size: "230",
+  "mobile-size": "150",
+  position: "bottom-right",
+  "avoid-selector": "#sources",
+  "asset-base": `${BASE}carnival-dancer-widget/assets/`,
+  label: "Carnival dancer mascot",
+};
 
 function loadScript(src: string) {
   return new Promise<void>((resolve, reject) => {
@@ -971,18 +972,22 @@ function loadScript(src: string) {
   });
 }
 
+// The element is created once on <body>, outside React's tree. Re-inserting it
+// (e.g. via innerHTML on a re-render) replays her entrance and orphans the
+// dialogue listeners in MascotDialogue.
 function Mascot() {
   useEffect(() => {
+    let mascot = document.querySelector("carnival-mascot");
+    if (!mascot) {
+      mascot = document.createElement("carnival-mascot");
+      for (const [name, value] of Object.entries(MASCOT_ATTRS)) mascot.setAttribute(name, value);
+      document.body.appendChild(mascot);
+    }
     void loadScript(`${BASE}carnival-dancer-widget/dancer.js`).then(() =>
       loadScript(`${BASE}carnival-dancer-widget/mascot.js`),
     );
   }, []);
-  return (
-    <>
-      <div dangerouslySetInnerHTML={{ __html: MASCOT_HTML }} />
-      <MascotDialogue />
-    </>
-  );
+  return <MascotDialogue />;
 }
 
 function Page() {
@@ -1147,7 +1152,6 @@ function Page() {
           </details>
         </div>
       </footer>
-      <Mascot />
     </div>
   );
 }
@@ -1156,6 +1160,7 @@ function Index() {
   return (
     <PasswordGate>
       <Page />
+      <Mascot />
     </PasswordGate>
   );
 }
