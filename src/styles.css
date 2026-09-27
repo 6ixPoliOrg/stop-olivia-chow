@@ -20,6 +20,29 @@
   --nav-h: 64px;
 }
 
+/* Theme colours for the shared UI components (password gate, 404 and error
+   screens, components/ui). Without these, bg-background, text-foreground, etc.
+   resolve to nothing and the gate renders ink-on-ink over the dark body. */
+@theme {
+  --color-background: #faf7f0;
+  --color-foreground: #141414;
+  --color-card: #ffffff;
+  --color-card-foreground: #141414;
+  --color-primary: #e0261b;
+  --color-primary-foreground: #faf7f0;
+  --color-secondary: #f6c945;
+  --color-secondary-foreground: #141414;
+  --color-muted: #ece7dc;
+  --color-muted-foreground: #5c574f;
+  --color-accent: #f6c945;
+  --color-accent-foreground: #141414;
+  --color-destructive: #b3190f;
+  --color-destructive-foreground: #faf7f0;
+  --color-border: #d8d2c6;
+  --color-input: #bfb8ab;
+  --color-ring: #e0261b;
+}
+
 /* ------------------------------------------------------------
    BASE
    ------------------------------------------------------------ */
